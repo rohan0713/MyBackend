@@ -1,17 +1,14 @@
-import http from 'http'
-import name from './features.js'
+import express from 'express'
+import path from 'path'
 
-console.log(name)
+const app = express()
 
-const server = http.createServer((req,res) => {
-    if(req.url === '/about'){
-        res.end("<h1>About Page</h1>")
-    }
-    if(req.url === '/'){
-        res.end("<h1>Home Page<h1>")
-    }
+app.get("/", (req,res) => {
+
+    const pathName = path.resolve()
+    res.sendFile(path.join(pathName, 'index.html'))
 })
 
-server.listen(5000, () => {
-    console.log("SERVER IS RUNNING")
+app.listen(5000, () => {
+    console.log('Server Started')
 })
