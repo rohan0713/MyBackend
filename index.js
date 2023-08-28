@@ -1,5 +1,19 @@
 import express from 'express'
 import path from 'path'
+import mongoose from 'mongoose'
+
+mongoose.connect("mongodb://localhost:27017/", {
+    dbName: "backend"
+})
+.then(() => console.log("Database connected"))
+.catch((e) => console.log(e))
+
+const dataSchema = new mongoose.Schema({
+    name: String,
+    email: String
+})
+
+const users = mongoose.model("users", dataSchema)
 
 const app = express()
 
@@ -21,7 +35,9 @@ app.get("/success", (req,res) => {
     res.render('success')
 })
 
-app.post("/submit", (req,res) => {
+app.post("/submit", async (req,res) => {
+    const {name, email} = req.body
+    await users.create({name, email})
     console.log(req.body)
     res.redirect("/success")
 })
